@@ -2,9 +2,18 @@
 import React, { useState } from 'react';
 import { Clock, Star, Zap, MessageCircle, Info, Video } from 'lucide-react';
 
+interface ServiceDetails {
+  objective: string;
+  complete: string;
+}
+
 const ServicesSection = () => {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: '', description: '', prices: [] });
+  const [modalContent, setModalContent] = useState<{ 
+    title: string; 
+    description: string | ServiceDetails; 
+    prices: Array<{ type: string; price: string; video: string }>;
+  }>({ title: '', description: '', prices: [] });
 
   const services = [
     {
@@ -80,7 +89,7 @@ const ServicesSection = () => {
     window.open(whatsappUrl, '_blank');
   };
 
-  const showDetails = (service) => {
+  const showDetails = (service: any) => {
     setModalContent({
       title: service.title,
       description: service.details || service.details,
@@ -278,7 +287,7 @@ const ServicesSection = () => {
               </button>
             </div>
             
-            {modalContent.description && typeof modalContent.description === 'object' && modalContent.description.objective && modalContent.description.complete && (
+            {typeof modalContent.description === 'object' && modalContent.description && 'objective' in modalContent.description && 'complete' in modalContent.description && (
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-mystic-violet mb-2">Pergunta Objetiva:</h4>
