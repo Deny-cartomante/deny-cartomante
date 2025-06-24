@@ -1,21 +1,21 @@
 
 import React from 'react';
 import Header from '../components/Header';
-import HeroSection from '../components/HeroSection';
-import ContactSection from '../components/ContactSection';
+import CartasSection from '../components/CartasSection';
 import Footer from '../components/Footer';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 
-const Index = () => {
+const CartasPage = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <HeroSection />
-      <ContactSection />
+      <div className="pt-20">
+        <CartasSection />
+      </div>
       <Footer />
       <WhatsAppFloat />
     </div>
   );
 };
 
-export default Index;
+export default CartasPage;
