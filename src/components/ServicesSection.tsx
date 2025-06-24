@@ -278,7 +278,7 @@ const ServicesSection = () => {
               </button>
             </div>
             
-            {modalContent.description.objective && (
+            {modalContent.description && typeof modalContent.description === 'object' && modalContent.description.objective && (
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-mystic-violet mb-2">Pergunta Objetiva:</h4>
