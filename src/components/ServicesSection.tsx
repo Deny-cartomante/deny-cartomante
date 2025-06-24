@@ -1,319 +1,302 @@
 
 import React, { useState } from 'react';
-import { Clock, Star, Zap, MessageCircle, Info, Video } from 'lucide-react';
+import { Star, Clock, MessageCircle, Eye, Gift, Heart, DollarSign, Sparkles } from 'lucide-react';
 
-interface ServiceDetails {
-  objective: string;
-  complete: string;
+interface Service {
+  name: string;
+  price: string;
+  description: string;
+  details?: string;
+  savings?: string;
 }
 
 const ServicesSection = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState<{ 
-    title: string; 
-    description: string | ServiceDetails; 
-    prices: Array<{ type: string; price: string; video: string }>;
-  }>({ title: '', description: '', prices: [] });
+  const [activeTab, setActiveTab] = useState('individual');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<Service | null>(null);
 
-  const services = [
+  const individualServices = [
     {
-      title: "1 Pergunta",
-      subtitle: "Tarot ou Baralho Cigano",
-      prices: [
-        { type: "Objetiva (3 cartas)", price: "R$ 13,00", video: "R$ 16,90" },
-        { type: "Completa", price: "R$ 15,00", video: "R$ 19,50" }
-      ],
-      icon: MessageCircle,
-      description: "Uma consulta direta e precisa para sua questão mais importante",
-      details: {
-        objective: "Pergunta objetiva utiliza tiragem de 3 cartas com resposta rápida e simples, ideal para questões diretas que precisam de clareza imediata.",
-        complete: "Pergunta completa utiliza tiragem de 6 cartas + fundo do deck, com possibilidade de complemento com outro baralho ou tiragem personalizada conforme a necessidade energética."
-      }
+      name: "1 Pergunta Objetiva",
+      price: "R$ 13",
+      description: "3 cartas - Resposta simples e direta",
+      details: "Tiragem com 3 cartas para uma pergunta específica. Resposta rápida e objetiva sobre sua questão."
     },
     {
-      title: "2 Perguntas", 
-      subtitle: "Tarot ou Baralho Cigano",
-      prices: [
-        { type: "Objetivas", price: "R$ 18,00", video: "R$ 23,40" },
-        { type: "Completas", price: "R$ 20,00", video: "R$ 26,00" }
-      ],
-      icon: Star,
-      description: "Aprofunde suas questões com duas consultas",
-      details: {
-        objective: "Duas perguntas objetivas com tiragem de 3 cartas cada, respostas diretas e conexões entre os temas abordados.",
-        complete: "Duas perguntas completas com tiragem expandida, análise profunda das conexões entre as questões e orientação detalhada."
-      }
+      name: "1 Pergunta Completa", 
+      price: "R$ 15",
+      description: "6 cartas + fundo do deck - Análise profunda",
+      details: "Tiragem completa com 6 cartas mais fundo do deck. Análise detalhada com possível complemento de outro baralho se necessário."
     },
     {
-      title: "3 Perguntas",
-      subtitle: "Tarot ou Baralho Cigano",
-      prices: [
-        { type: "Objetivas", price: "R$ 23,00", video: "R$ 29,90" },
-        { type: "Completas", price: "R$ 25,00", video: "R$ 32,50" }
-      ],
-      icon: Zap,
-      description: "Visão completa da situação com três consultas",
-      details: {
-        objective: "Três perguntas objetivas ideais para ter uma visão geral de diferentes aspectos da sua vida com respostas claras.",
-        complete: "Três perguntas completas oferecem análise abrangente e conselhos espirituais detalhados sobre múltiplos aspectos."
-      },
-      popular: true
+      name: "2 Perguntas Objetivas",
+      price: "R$ 18", 
+      description: "Duas perguntas com respostas simples",
+      details: "Duas tiragens de 3 cartas cada, com respostas objetivas para suas questões."
+    },
+    {
+      name: "2 Perguntas Completas",
+      price: "R$ 20",
+      description: "Duas análises profundas completas", 
+      details: "Duas tiragens completas com 6 cartas cada mais fundo do deck para análise detalhada."
+    },
+    {
+      name: "3 Perguntas Objetivas", 
+      price: "R$ 23",
+      description: "Três perguntas com respostas diretas",
+      details: "Três tiragens de 3 cartas cada, respostas rápidas e objetivas."
+    },
+    {
+      name: "3 Perguntas Completas",
+      price: "R$ 25", 
+      description: "Três análises completas e detalhadas",
+      details: "Três tiragens completas com análise profunda e detalhada de cada questão."
     }
   ];
 
-  const consultations = [
+  const consultationServices = [
     {
-      title: "30 Minutos",
-      subtitle: "Consulta ao Vivo",
-      price: "R$ 39,99",
-      videoPrice: "R$ 51,99",
-      icon: Clock,
-      description: "30 minutos corridos de consulta em tempo real",
-      details: "Consulta de 30 minutos corridos onde você pode fazer quantas perguntas forem necessárias ou possíveis neste tempo. Interação direta e respostas imediatas."
+      name: "Consulta 30 minutos",
+      price: "R$ 60",
+      description: "30 minutos corridos de perguntas ilimitadas",
+      details: "Quantas perguntas forem necessárias ou possíveis em 30 minutos corridos de consulta."
     },
     {
-      title: "1 Hora",
-      subtitle: "Consulta ao Vivo", 
-      price: "R$ 54,99",
-      videoPrice: "R$ 71,49",
-      icon: Star,
-      description: "1 hora completa de orientação espiritual",
-      details: "Consulta de 1 hora completa para mergulho profundo espiritual. Tempo suficiente para abordar múltiplas questões com análise detalhada e orientação personalizada."
+      name: "Consulta 30 min - Videochamada",
+      price: "R$ 78", 
+      description: "30 minutos por videochamada (+30%)",
+      details: "Consulta de 30 minutos por videochamada com perguntas ilimitadas."
+    },
+    {
+      name: "Consulta 1 hora",
+      price: "R$ 100",
+      description: "1 hora corrida de perguntas ilimitadas", 
+      details: "Uma hora completa para todas as perguntas que precisar fazer."
+    },
+    {
+      name: "Consulta 1 hora - Videochamada", 
+      price: "R$ 130",
+      description: "1 hora por videochamada (+30%)",
+      details: "Consulta de 1 hora por videochamada com perguntas ilimitadas."
     }
   ];
 
-  const openWhatsApp = (service: string, price: string, isVideo: boolean = false) => {
-    const serviceType = isVideo ? `${service} (Videochamada)` : service;
-    const message = `Olá! Gostaria de solicitar o serviço: ${serviceType} - ${price}`;
+  const packageServices = [
+    {
+      name: "Pacote Vida Passada",
+      price: "R$ 45",
+      description: "Descubra seus padrões kármicos e vidas anteriores",
+      details: "Inclui: Leitura de matriz através de cartas de tarot, leitura de cartas aprofundada sobre vidas passadas e direcionamento sobre o karma."
+    },
+    {
+      name: "Pacote Bom Relacionamento", 
+      price: "R$ 30",
+      description: "Análise completa do seu relacionamento",
+      details: "Inclui: Tiragem do Templo de Afrodite, Tiragem do Bom Relacionamento e 2 conselhos exclusivos.",
+      savings: "Economize R$ 10"
+    },
+    {
+      name: "Pacote Prosperidade Total",
+      price: "R$ 40", 
+      description: "Foco em abundância e sucesso financeiro",
+      details: "Inclui: Tiragem dos Bloqueios Financeiros, Leitura dos Caminhos da Prosperidade e Ritual Simbólico de Abertura.",
+      savings: "Economize R$ 12"
+    },
+    {
+      name: "Carta Canalizada Personalizada",
+      price: "R$ 40",
+      description: "Carta canalizada com tema de sua escolha", 
+      details: "Uma carta especial canalizada especificamente para você com o tema ou título que preferir."
+    }
+  ];
+
+  const tabs = [
+    { id: 'individual', label: 'Perguntas Individuais', icon: Star },
+    { id: 'consultation', label: 'Consultas', icon: Clock },
+    { id: 'packages', label: 'Pacotes', icon: Gift }
+  ];
+
+  const openModal = (service: Service) => {
+    setModalContent(service);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalContent(null);
+  };
+
+  const openWhatsApp = (service: Service) => {
+    const message = `Olá! Gostaria de solicitar: ${service.name} - ${service.price}`;
     const whatsappUrl = `https://wa.me/5511933383977?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
-  const showDetails = (service: any) => {
-    setModalContent({
-      title: service.title,
-      description: service.details || service.details,
-      prices: service.prices || [{ type: service.subtitle, price: service.price, video: service.videoPrice }]
-    });
-    setShowModal(true);
+  const getCurrentServices = () => {
+    switch(activeTab) {
+      case 'individual': return individualServices;
+      case 'consultation': return consultationServices; 
+      case 'packages': return packageServices;
+      default: return individualServices;
+    }
   };
 
   return (
     <section id="services" className="py-20 relative">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="section-title">Jogos de Baralho Cigano e Tarot</h2>
-          <div className="w-20 h-0.5 bg-gradient-to-r from-mystic-accent to-mystic-gold mx-auto mb-6"></div>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Consultas precisas com métodos de tiragem personalizados para cada situação
+          <h2 className="section-title">Jogos de Cartas</h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-mystic-accent to-mystic-gold mx-auto mb-8"></div>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Descubra os segredos do universo através das cartas ancestrais do Tarot e Baralho Cigano.
           </p>
         </div>
 
-        {/* Area de Explicação */}
-        <div className="glass-effect rounded-xl p-6 mb-12 max-w-4xl mx-auto">
-          <h3 className="font-cinzel-text text-xl font-bold text-mystic-gold mb-4 text-center">
-            Tipos de Consulta
-          </h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="text-center">
-              <h4 className="font-semibold text-mystic-violet mb-2">Pergunta Objetiva</h4>
-              <p className="text-gray-300 text-sm">
-                Tiragem de 3 cartas com resposta rápida e simples, ideal para questões diretas.
-              </p>
-            </div>
-            <div className="text-center">
-              <h4 className="font-semibold text-mystic-violet mb-2">Pergunta Completa</h4>
-              <p className="text-gray-300 text-sm">
-                Tiragem de 6 cartas + fundo do deck, com possibilidade de complemento personalizado.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {services.map((service, index) => {
-            const IconComponent = service.icon;
+        {/* Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {tabs.map((tab) => {
+            const IconComponent = tab.icon;
             return (
-              <div
-                key={index}
-                className={`service-card relative animate-fade-in ${
-                  service.popular ? 'ring-2 ring-mystic-gold' : ''
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center space-x-3 px-6 py-3 rounded-lg font-semibold transition-all duration-300 animate-fade-in ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-mystic-accent to-mystic-violet text-white shadow-lg shadow-mystic-violet/30'
+                    : 'glass-effect text-gray-300 hover:text-white card-hover-effect'
                 }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {service.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-mystic-accent to-mystic-gold text-white px-3 py-1 rounded-full text-xs font-semibold">
-                      Mais Popular
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-mystic-accent to-mystic-violet rounded-lg flex items-center justify-center">
-                    <IconComponent className="w-5 h-5 text-white" />
-                  </div>
-                  <button
-                    onClick={() => showDetails(service)}
-                    className="text-mystic-gold hover:text-mystic-violet transition-colors duration-300"
-                  >
-                    <Info className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <h3 className="font-cinzel-text text-lg font-bold text-white mb-2">
-                  {service.title}
-                </h3>
-                <p className="text-mystic-violet font-medium mb-3 text-sm">
-                  {service.subtitle}
-                </p>
-                <p className="text-gray-300 mb-4 text-sm">
-                  {service.description}
-                </p>
-
-                <div className="space-y-2 mb-4">
-                  {service.prices.map((priceInfo, priceIndex) => (
-                    <div key={priceIndex} className="flex justify-between items-center text-sm">
-                      <span className="text-gray-400">{priceInfo.type}</span>
-                      <div className="flex flex-col text-right">
-                        <span className="text-mystic-gold font-bold">{priceInfo.price}</span>
-                        <span className="text-xs text-gray-500">Vídeo: {priceInfo.video}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="space-y-2">
-                  <button 
-                    onClick={() => openWhatsApp(service.title, service.prices[0].price)}
-                    className="w-full bg-gradient-to-r from-mystic-accent to-mystic-violet text-white py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-mystic-violet/50 transition-all duration-300 text-sm"
-                  >
-                    Solicitar por Chat
-                  </button>
-                  <button 
-                    onClick={() => openWhatsApp(service.title, service.prices[0].video, true)}
-                    className="w-full border border-mystic-violet text-mystic-violet py-2 rounded-lg font-semibold hover:bg-mystic-violet hover:text-white transition-all duration-300 text-sm flex items-center justify-center"
-                  >
-                    <Video className="w-4 h-4 mr-1" />
-                    Videochamada (+30%)
-                  </button>
-                </div>
-              </div>
+                <IconComponent className="w-5 h-5" />
+                <span>{tab.label}</span>
+              </button>
             );
           })}
         </div>
 
-        {/* Consultations Section */}
-        <div className="border-t border-mystic-violet/20 pt-16">
-          <h3 className="font-cinzel-text text-2xl font-bold text-center text-mystic-gold mb-8">
-            Consultas ao Vivo
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {consultations.map((consultation, index) => {
-              const IconComponent = consultation.icon;
-              return (
-                <div
-                  key={index}
-                  className="service-card animate-fade-in"
-                  style={{ animationDelay: `${(index + 3) * 0.1}s` }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-br from-mystic-accent to-mystic-violet rounded-lg flex items-center justify-center">
-                      <IconComponent className="w-5 h-5 text-white" />
-                    </div>
-                    <button
-                      onClick={() => showDetails(consultation)}
-                      className="text-mystic-gold hover:text-mystic-violet transition-colors duration-300"
-                    >
-                      <Info className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  <h3 className="font-cinzel-text text-lg font-bold text-white mb-2">
-                    {consultation.title}
-                  </h3>
-                  <p className="text-mystic-violet font-medium mb-3 text-sm">
-                    {consultation.subtitle}
-                  </p>
-                  <p className="text-gray-300 mb-4 text-sm">
-                    {consultation.description}
-                  </p>
-
-                  <div className="flex justify-between items-center mb-4 text-sm">
-                    <span className="text-gray-400">Chat/Áudio</span>
-                    <div className="flex flex-col text-right">
-                      <span className="text-mystic-gold font-bold text-lg">{consultation.price}</span>
-                      <span className="text-xs text-gray-500">Vídeo: {consultation.videoPrice}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <button 
-                      onClick={() => openWhatsApp(consultation.title, consultation.price)}
-                      className="w-full bg-gradient-to-r from-mystic-accent to-mystic-violet text-white py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-mystic-violet/50 transition-all duration-300 text-sm"
-                    >
-                      Agendar por Chat
-                    </button>
-                    <button 
-                      onClick={() => openWhatsApp(consultation.title, consultation.videoPrice, true)}
-                      className="w-full border border-mystic-violet text-mystic-violet py-2 rounded-lg font-semibold hover:bg-mystic-violet hover:text-white transition-all duration-300 text-sm flex items-center justify-center"
-                    >
-                      <Video className="w-4 h-4 mr-1" />
-                      Videochamada (+30%)
-                    </button>
-                  </div>
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+          {getCurrentServices().map((service, index) => (
+            <div
+              key={index}
+              className="service-card animate-scale-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-cinzel-text text-lg font-bold text-white">
+                  {service.name}
+                </h3>
+                <div className="price-highlight">{service.price}</div>
+              </div>
+              
+              {service.savings && (
+                <div className="bg-mystic-gold/20 text-mystic-gold px-3 py-1 rounded-full text-sm font-semibold mb-3 inline-block">
+                  {service.savings}
                 </div>
-              );
-            })}
+              )}
+              
+              <p className="text-gray-300 text-sm mb-6">
+                {service.description}
+              </p>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => openModal(service)}
+                  className="w-full bg-mystic-violet/30 hover:bg-mystic-violet/50 text-mystic-violet hover:text-white border border-mystic-violet py-2 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-mystic-violet/30"
+                >
+                  <Eye className="w-4 h-4 inline mr-2" />
+                  Detalhes
+                </button>
+                
+                <button
+                  onClick={() => openWhatsApp(service)}
+                  className="w-full bg-gradient-to-r from-mystic-accent to-mystic-violet text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:shadow-mystic-violet/50 transition-all duration-300 hover:scale-105"
+                >
+                  <MessageCircle className="w-4 h-4 inline mr-2" />
+                  Solicitar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Testimonials */}
+        <div className="mt-20 text-center">
+          <h3 className="font-cinzel-text text-2xl font-bold text-mystic-gold mb-8">
+            O que nossos clientes dizem
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="glass-effect rounded-xl p-6 animate-fade-in">
+              <div className="flex text-mystic-gold mb-4 justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current" />
+                ))}
+              </div>
+              <blockquote className="text-gray-300 italic mb-4">
+                "As leituras do Deny são incrivelmente precisas! Ele tem um dom real para interpretar as cartas."
+              </blockquote>
+              <p className="text-gray-400 text-sm">- Maria S.</p>
+            </div>
+            
+            <div className="glass-effect rounded-xl p-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="flex text-mystic-gold mb-4 justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-current" />
+                ))}
+              </div>
+              <blockquote className="text-gray-300 italic mb-4">
+                "Consultei sobre meu relacionamento e as orientações foram transformadoras. Recomendo!"
+              </blockquote>
+              <p className="text-gray-400 text-sm">- João P.</p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 animate-fade-in">
-          <div className="glass-effect rounded-xl p-6 max-w-md w-full animate-scale-in">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-cinzel-text text-xl font-bold text-mystic-gold">
-                {modalContent.title}
+      {modalOpen && modalContent && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass-effect rounded-xl p-8 max-w-md w-full animate-scale-in">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-cinzel-text text-xl font-bold text-white">
+                {modalContent.name}
               </h3>
               <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-white transition-colors"
+                onClick={closeModal}
+                className="text-gray-400 hover:text-white transition-colors duration-300"
               >
                 ✕
               </button>
             </div>
             
-            {typeof modalContent.description === 'object' && modalContent.description && 'objective' in modalContent.description && 'complete' in modalContent.description && (
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-mystic-violet mb-2">Pergunta Objetiva:</h4>
-                  <p className="text-gray-300 text-sm">{modalContent.description.objective}</p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-mystic-violet mb-2">Pergunta Completa:</h4>
-                  <p className="text-gray-300 text-sm">{modalContent.description.complete}</p>
-                </div>
+            <div className="price-highlight text-center mb-4">{modalContent.price}</div>
+            
+            {modalContent.savings && (
+              <div className="bg-mystic-gold/20 text-mystic-gold px-3 py-2 rounded-lg text-center font-semibold mb-4">
+                {modalContent.savings}
               </div>
             )}
             
-            {typeof modalContent.description === 'string' && (
-              <p className="text-gray-300 text-sm mb-4">{modalContent.description}</p>
-            )}
-
-            <div className="mt-6 space-y-2">
-              {modalContent.prices.map((price, index) => (
-                <div key={index} className="flex justify-between items-center p-2 bg-mystic-dark/50 rounded">
-                  <span className="text-sm text-gray-300">{price.type}</span>
-                  <div className="text-right">
-                    <div className="text-mystic-gold font-bold">{price.price}</div>
-                    <div className="text-xs text-gray-500">Vídeo: {price.video}</div>
-                  </div>
-                </div>
-              ))}
+            <p className="text-gray-300 mb-6">
+              {modalContent.details}
+            </p>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={closeModal}
+                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold transition-all duration-300"
+              >
+                Fechar
+              </button>
+              <button
+                onClick={() => {
+                  openWhatsApp(modalContent);
+                  closeModal();
+                }}
+                className="flex-1 bg-gradient-to-r from-mystic-accent to-mystic-violet text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:shadow-mystic-violet/50 transition-all duration-300"
+              >
+                <MessageCircle className="w-4 h-4 inline mr-2" />
+                Solicitar
+              </button>
             </div>
           </div>
         </div>
