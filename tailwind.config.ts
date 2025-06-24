@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				mystic: {
+					dark: '#0D0D0D',
+					purple: '#1a0a2e',
+					accent: '#4a148c',
+					gold: '#FFD700',
+					violet: '#9b4dca',
+					deep: '#170126'
 				}
+			},
+			fontFamily: {
+				'cinzel': ['Cinzel Decorative', 'serif'],
+				'cinzel-text': ['Cinzel', 'serif'],
+				'crimson': ['Crimson Text', 'serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +98,63 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px)'
+					},
+					'50%': {
+						transform: 'translateY(-10px)'
+					}
+				},
+				'pulse-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px rgba(155, 77, 202, 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 30px rgba(155, 77, 202, 0.8)'
+					}
+				},
+				'shimmer': {
+					'0%': {
+						backgroundPosition: '-1000px 0'
+					},
+					'100%': {
+						backgroundPosition: '1000px 0'
+					}
+				},
+				'card-hover': {
+					'0%': {
+						transform: 'translateY(0) scale(1)'
+					},
+					'100%': {
+						transform: 'translateY(-5px) scale(1.02)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.6s ease-out',
+				'float': 'float 3s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+				'shimmer': 'shimmer 2s linear infinite',
+				'card-hover': 'card-hover 0.3s ease-out'
+			},
+			backgroundImage: {
+				'mystic-gradient': 'linear-gradient(135deg, #0D0D0D 0%, #170126 50%, #1a0a2e 100%)',
+				'card-gradient': 'linear-gradient(145deg, rgba(26, 10, 46, 0.9) 0%, rgba(23, 1, 38, 0.9) 100%)',
+				'shimmer-gradient': 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)'
 			}
 		}
 	},
