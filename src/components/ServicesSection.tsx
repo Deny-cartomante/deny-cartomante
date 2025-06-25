@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Star, Clock, MessageCircle, Eye, Gift, Heart, DollarSign, Sparkles } from 'lucide-react';
 
@@ -56,25 +57,25 @@ const ServicesSection = () => {
   const consultationServices = [
     {
       name: "Consulta 30 minutos",
-      price: "R$ 60",
+      price: "R$ 45",
       description: "30 minutos corridos de perguntas ilimitadas",
       details: "Quantas perguntas forem necessárias ou possíveis em 30 minutos corridos de consulta."
     },
     {
       name: "Consulta 30 min - Videochamada",
-      price: "R$ 78", 
+      price: "R$ 59,99", 
       description: "30 minutos por videochamada (+30%)",
       details: "Consulta de 30 minutos por videochamada com perguntas ilimitadas."
     },
     {
       name: "Consulta 1 hora",
-      price: "R$ 100",
+      price: "R$ 55",
       description: "1 hora corrida de perguntas ilimitadas", 
       details: "Uma hora completa para todas as perguntas que precisar fazer."
     },
     {
       name: "Consulta 1 hora - Videochamada", 
-      price: "R$ 130",
+      price: "R$ 70",
       description: "1 hora por videochamada (+30%)",
       details: "Consulta de 1 hora por videochamada com perguntas ilimitadas."
     }
