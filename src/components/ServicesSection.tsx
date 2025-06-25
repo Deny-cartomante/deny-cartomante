@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Star, Clock, MessageCircle, Eye, Gift, Heart, DollarSign, Sparkles } from 'lucide-react';
 
