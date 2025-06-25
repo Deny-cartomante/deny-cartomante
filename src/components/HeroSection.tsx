@@ -78,8 +78,8 @@ const HeroSection = () => {
             <div className="text-gray-400 text-sm">Clientes Atendidos</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-mystic-gold mb-2">10+</div>
-            <div className="text-gray-400 text-sm">Anos de Experiência</div>
+            <div className="text-2xl font-bold text-mystic-gold mb-2">+2</div>
+            <div className="text-gray-400 text-sm">anos de experiência</div>
           </div>
         </div>
       </div>

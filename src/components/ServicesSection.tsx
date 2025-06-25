@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Star, Clock, MessageCircle, Eye, Gift, Heart, DollarSign, Sparkles } from 'lucide-react';
 
@@ -217,38 +216,6 @@ const ServicesSection = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Testimonials */}
-        <div className="mt-20 text-center">
-          <h3 className="font-cinzel-text text-2xl font-bold text-mystic-gold mb-8">
-            O que nossos clientes dizem
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="glass-effect rounded-xl p-6 animate-fade-in">
-              <div className="flex text-mystic-gold mb-4 justify-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <blockquote className="text-gray-300 italic mb-4">
-                "As leituras do Deny são incrivelmente precisas! Ele tem um dom real para interpretar as cartas."
-              </blockquote>
-              <p className="text-gray-400 text-sm">- Maria S.</p>
-            </div>
-            
-            <div className="glass-effect rounded-xl p-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="flex text-mystic-gold mb-4 justify-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
-                ))}
-              </div>
-              <blockquote className="text-gray-300 italic mb-4">
-                "Consultei sobre meu relacionamento e as orientações foram transformadoras. Recomendo!"
-              </blockquote>
-              <p className="text-gray-400 text-sm">- João P.</p>
-            </div>
-          </div>
         </div>
       </div>
 
